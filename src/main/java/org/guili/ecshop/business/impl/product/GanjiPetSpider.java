@@ -305,8 +305,15 @@ public class GanjiPetSpider extends PetSpiderParent{
 	@Override
 	public PetSaleInfo petDetail(String detailUrl) throws URISyntaxException,
 			IOException {
-		// TODO Auto-generated method stub
-		return null;
+		httpComponent=new HttpComponent();
+		HttpGet httpGet = new HttpGet(detailUrl);
+		httpGet.addHeader("Content-Type", "text/html;charset=UTF-8");
+		httpGet.addHeader("Cookie", "ganji_xuuid=b6913ed3-78b3-459e-a62c-aad15001574f; friend_tip=1; citydomain=sh; SiftRecord['1427045685']=%E4%BB%8A%E6%97%A5%E7%89%B9%E4%BB%B7%E5%A4%A7%E4%BF%83%E9%94%80%E5%90%84%E7%B1%BB%E5%90%8D...%7C%7C%2Fchongwu%2Fs%2F_%25E4%25BB%258A%25E6%2597%25A5%25E7%2589%25B9%25E4%25BB%25B7%25E5%25A4%25A7%25E4%25BF%2583%25E9%2594%2580%25E5%2590%2584%25E7%25B1%25BB%25E5%2590%258D%25E7%258A%25AC%25E8%2590%25A8%25E6%2591%25A9%2F; vip_version=new; __utmt=1; statistics_clientid=me; lg=1; __utma=32156897.804794746.1427045724.1427045724.1427122310.2; __utmb=32156897.3.10.1427122310; __utmc=32156897; __utmz=32156897.1427045724.1.1.utmcsr=sh.ganji.com|utmccn=(referral)|utmcmd=referral|utmcct=/gou/; ganji_uuid=4762348307934438583103; _gl_tracker=%7B%22ca_source%22%3A%22-%22%2C%22ca_name%22%3A%22-%22%2C%22ca_kw%22%3A%22-%22%2C%22ca_id%22%3A%22-%22%2C%22ca_s%22%3A%22self%22%2C%22ca_n%22%3A%22-%22%2C%22ca_i%22%3A%22-%22%2C%22sid%22%3A82309737884%7D");
+		//设置user-Agent
+		httpGet.addHeader("User-Agent", USER_AGENT);
+//		httpComponent.setProxy("116.66.40.220",8080 );
+		PetSaleInfo petSaleInfo=httpComponent.execute(httpGet, petInfoDetailHandler);
+		return petSaleInfo;
 	}
 
 

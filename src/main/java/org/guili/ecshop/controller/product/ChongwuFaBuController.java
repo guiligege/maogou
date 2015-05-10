@@ -1,9 +1,13 @@
 package org.guili.ecshop.controller.product;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.guili.ecshop.bean.chongwu.PetSaleInfo;
+import org.guili.ecshop.business.impl.product.SpiderType;
+import org.guili.ecshop.business.impl.product.Spiders;
 import org.guili.ecshop.controller.common.BaseProfileController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * 分享宠物
  * @author Administrator
@@ -19,7 +25,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class ChongwuFaBuController extends BaseProfileController{
-
+	
+	private static final String GANJI_SITE="ganji.com";
+	private static final String WUBA_SITE="58.com";
 	/**
 	 * 分享宠物
 	 * @param request
@@ -47,8 +55,57 @@ public class ChongwuFaBuController extends BaseProfileController{
     public PetSaleInfo ajaxshare(HttpServletResponse response,HttpServletRequest request,
                                     @RequestParam(value="shareUrl", required=false) String  shareUrl
                                     ) throws IOException{
-    	PetSaleInfo petSaleInfo=new PetSaleInfo();
     	
+    	PetSaleInfo petSaleInfo=new PetSaleInfo();
+    	//空判定
+    	if(shareUrl==null ||shareUrl.isEmpty()){
+			return petSaleInfo;
+		}
+    	//验证url
+		if(!isValidateURL(shareUrl)){
+			return petSaleInfo;
+		}
+		if(getSpiderType(shareUrl)==null){
+			return petSaleInfo;
+		}
+    	//执行指定的spider
+		try {
+			petSaleInfo=Spiders.getHandler(getSpiderType(shareUrl)).petDetail(shareUrl);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(JSON.toJSON(petSaleInfo));
         return petSaleInfo;  
+    }
+    
+    /**
+     * 验证url是否可用
+     * @param shareUrl
+     * @return
+     */
+    private boolean isValidateURL(String  shareUrl){
+    	if(!shareUrl.contains(WUBA_SITE) && !shareUrl.contains(GANJI_SITE)){
+			return false;
+    	}
+    	if(!shareUrl.endsWith("x.htm") && !shareUrl.contains("x.shtml")){
+			return false;
+    	}
+    	return true;
+    }
+    
+    /**
+     * 获取网站类型
+     * @param shareUrl
+     * @return
+     */
+    private SpiderType getSpiderType(String  shareUrl){
+    	if(shareUrl.contains(WUBA_SITE)){
+    		return SpiderType.WUBA;
+    	}else if(shareUrl.contains(GANJI_SITE)){
+    		return SpiderType.GANJI;
+    	}
+    	else{
+    		return null;
+    	}
     }
 }

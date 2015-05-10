@@ -8,7 +8,11 @@
 <link href="${domain_css}/css/uploadify/uploadify.css?${version_css}" rel="stylesheet">
 <link href="${domain_css}/css/chongwu/fabu.css?${version_css}" rel="stylesheet">
 <style>
- 
+ i {
+	color: #f33;
+	font-style: normal;
+	font-size: 14px;
+	}
 </style>
 
   <div >
@@ -29,6 +33,15 @@
                 <span class="xh">3</span>填写详情
             </li>
         </ul>
+        <div style="margin-left: 184px;">
+        	<i> * </i>
+        	<span style="margin-left: 15px;font-size: 14px;">宠物链接</span>
+        	<input value="请填写宠物链接（目前支持58同城，赶集网链接）" name="shareUrl" type="text" id="id_shareUrl" size="45" maxlength="30" class="input1" style="margin-left: 39px;
+width: 428px;
+color: grey;
+font-size: 12px;"/>
+        	<input id="share_submit" type="button" class="btn-style2" value="获取信息" style="margin-left: 90px;width: 85px;">
+        </div>
       <div>
           <form id="login-form" action="" method="" autocomplete="off">
           <input value="${folder}" name="folder" type="hidden" id="id_folder" size="45" maxlength="30" class="input1">
@@ -342,6 +355,16 @@
         		  $(this).html("请输入1000字以内宠物描述信息，描述越完整，买家对宠物的了解就更多哟！");
         	  }
           });
+        //描述信息focus
+          $("#id_shareUrl")
+          .on( "focus",function(){
+        	  $(this).val("");
+          }).on( "blur",function(){
+        	  if($(this).val()==''){
+        		  $(this).val("请填写宠物链接（目前支持58同城，赶集网链接）");
+        	  }
+          });
+        
           $("#id_title")
           .on( "focus",function(){
         	  $(this).siblings(".validatorMsg").hide();

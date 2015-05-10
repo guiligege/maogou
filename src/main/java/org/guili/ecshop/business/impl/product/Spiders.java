@@ -15,8 +15,11 @@ public class Spiders  implements ApplicationContextAware{
 
 	 private static Map<SpiderType,IProductService> handlers = new EnumMap<SpiderType, IProductService>(SpiderType.class);
 	 
-	 public static IProductService getHandler(SpiderType trdLoginType){
-		 return handlers.get(trdLoginType);
+	 public static IProductService getHandler(SpiderType spiderType){
+		 if(spiderType==null){
+			 return null;
+		 }
+		 return handlers.get(spiderType);
 	 }
 	 
 	 /**

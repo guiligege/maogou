@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.guili.ecshop.dao.pet.IPetCategoryDao">
+ <!-- 要对应到所有属性 才能使用-->
+ <resultMap id="petCategoryMap" type="petCategory">
+ 	<result property="id" column="id"/>
+ 	<result property="name" column="name"/>
+ 	<result property="refname" column="refname"/>
+	<result property="parentType" column="parentType"/>
+	<result property="status" column="status"/>
+ </resultMap>
+   <!-- 根据状态码查询宠物类别-->
+ <select id="selectAllPetCategory" resultType="org.guili.ecshop.bean.chongwu.PetCategory">
+  	select * from pet_category  where status = 1
+ </select>
+</mapper>  
